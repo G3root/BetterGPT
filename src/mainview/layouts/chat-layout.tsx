@@ -1,3 +1,6 @@
-export function ChatLayout() {
-  return <div>ChatLayout</div>;
+interface ChatLayoutProps {
+  children: React.ReactNode;
+}
+export function ChatLayout({ children }: ChatLayoutProps) {
+  return <div>{children}</div>;
 }

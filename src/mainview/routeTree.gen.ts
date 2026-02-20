@@ -9,50 +9,75 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as ChatLayoutRouteImport } from './routes/_chat-layout'
+import { Route as ChatLayoutIndexRouteImport } from './routes/_chat-layout/index'
 
-const IndexRoute = IndexRouteImport.update({
+const ChatLayoutRoute = ChatLayoutRouteImport.update({
+  id: '/_chat-layout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChatLayoutIndexRoute = ChatLayoutIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => ChatLayoutRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof ChatLayoutIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/': typeof ChatLayoutIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/_chat-layout': typeof ChatLayoutRouteWithChildren
+  '/_chat-layout/': typeof ChatLayoutIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths: '/'
   fileRoutesByTo: FileRoutesByTo
   to: '/'
-  id: '__root__' | '/'
+  id: '__root__' | '/_chat-layout' | '/_chat-layout/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  ChatLayoutRoute: typeof ChatLayoutRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/_chat-layout': {
+      id: '/_chat-layout'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof ChatLayoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_chat-layout/': {
+      id: '/_chat-layout/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof ChatLayoutIndexRouteImport
+      parentRoute: typeof ChatLayoutRoute
     }
   }
 }
 
+interface ChatLayoutRouteChildren {
+  ChatLayoutIndexRoute: typeof ChatLayoutIndexRoute
+}
+
+const ChatLayoutRouteChildren: ChatLayoutRouteChildren = {
+  ChatLayoutIndexRoute: ChatLayoutIndexRoute,
+}
+
+const ChatLayoutRouteWithChildren = ChatLayoutRoute._addFileChildren(
+  ChatLayoutRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  ChatLayoutRoute: ChatLayoutRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
