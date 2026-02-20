@@ -15,6 +15,7 @@
   "dependencies": {
     "@base-ui/react": "^1.2.0",
     "@tailwindcss/vite": "^4.2.0",
+    "@tanstack/react-router": "^1.161.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "electrobun": "1.12.3",
@@ -27,6 +28,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.0",
+    "@tanstack/router-plugin": "^1.161.3",
     "@types/bun": "latest",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
